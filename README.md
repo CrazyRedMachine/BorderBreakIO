@@ -39,10 +39,10 @@ It is a 7 pin connector but only 6 are populated with wires.
 Pinout in order :
 - Black : GND
 - Blue : Thumbstick click (note: requires a mod to work, see footnote)
-- White : LED Blue -
-- Purple : LED Green -
-- Brown : LED Red -
-- Red : +5V
+- White : LED Blue (-)
+- Purple : LED Green (-)
+- Brown : LED Red (-)
+- Red : LED Vin (+5V)
 
 ### CN2+4
 
@@ -54,7 +54,7 @@ Pinout in order :
 - Black : GND Analog 
 - Yellow : Rx Analog 
 - Orange : Ry Analog 
-- Red : +5V Analog
+- Red : Vin Analog (+5V)
 
 ### CN3
 
