@@ -24,9 +24,13 @@ It has a 5 pin connector whose wire color match the usual USB pinout wires, as w
 
 ## Joystick
 
-The Joystick has a lot of wires coming from it, but that's just because it's internally made out of 3 separate PCBs.
+The Joystick has a lot of wires coming from it, but that's just because it's internally made out of 3 separate PCBs :
 
-Connectors all have a different number of pins so I'm gonna use that number to distinguish.
+- Top PCB : clickable analog stick and *common anode* RGB led
+- Bottom PCB : one microswitch for the side button
+- Front PCB : two microswitches or the two triggers
+
+The connectors coming out of the joystick all have a different number of pins so I'm gonna use that number to distinguish.
 
 ### CN7
 
