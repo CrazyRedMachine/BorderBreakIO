@@ -28,7 +28,7 @@ The Joystick has a lot of wires coming from it, but that's just because it's int
 
 Connectors all have a different number of pins so I'm gonna use that number to distinguish.
 
-### CN7 (7 pin connector)
+### CN7
 
 It is a 7 pin connector but only 6 are populated with wires.
 
