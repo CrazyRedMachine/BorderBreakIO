@@ -1,4 +1,4 @@
-# BorderBreakController Joystick Firmware
+# BorderBreakIO Joystick Firmware
 
 There are two versions of the Joystick firmware. Both share the same wiring.
 They are compatible with the clickable thumbstick mod described in this repo main readme file.
