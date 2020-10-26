@@ -15,10 +15,11 @@ byte buttonOrder[BUTTON_COUNT] = {BUTTONB,BUTTONA,BUTTONY,BUTTONX};
 int buttonState[BUTTON_COUNT] = {0,0,0,0};
 int lastButtonState[BUTTON_COUNT] = {0,0,0,0};
 int ledState[3] = {HIGH,LOW,HIGH};
-int sensorValue;
-int sensorValue2;
+int currX;
+int currY;
 int outputValue;
 int outputValue2;
+int baseX, baseY, minX, maxX, minY, maxY;
 
 void setup() {
   //additional gnd
@@ -34,6 +35,13 @@ void setup() {
     pinMode(ledPins[i], OUTPUT);
   }
 
+  baseX = analogRead(analogInPin);
+  baseY = analogRead(analogInPin2);
+  minX = 200;
+  minY = 200;
+  maxX = 800;
+  maxY = 800;
+  
   SetupHardware();
   GlobalInterruptEnable();
 }
@@ -107,10 +115,39 @@ void loop() {
   }
   
   // Read analogs
-  sensorValue = analogRead(analogInPin);
-  sensorValue2 = analogRead(analogInPin2);
-  buttonStatus[AXISLX] = map(sensorValue, 170, 860, 0, 255);
-  buttonStatus[AXISLY] = -1*map(sensorValue2, 150, 900, 0, 255);
+  currX = analogRead(analogInPin);
+  currY = analogRead(analogInPin2);
+  if ((currX - baseX < 50)&&(currX - baseX > -50))
+    buttonStatus[AXISLX] = 127;
+  else if (currX < minX){
+    minX = currX-20;
+    buttonStatus[AXISLX] = 0;
+  }
+  else if (currX > maxX){
+    maxX = currX+20;
+    buttonStatus[AXISLX] = 255;
+  } else if (currX > baseX){
+    buttonStatus[AXISLX] = map(currX, baseX, maxX, 127, 255);
+  } else if (currX < baseX){
+    buttonStatus[AXISLX] = map(currX, minX, baseX, 0, 127);
+  }
+  
+
+  if ((currY - baseY < 50)&&(currY - baseY > -50))
+    buttonStatus[AXISLY] = 127;
+  else if (currY < minY){
+    minY = currY-20;
+    buttonStatus[AXISLY] = 0;
+  }
+  else if (currY > maxY){
+    maxY = currY+20;
+    buttonStatus[AXISLY] = 255;
+  } else if (currY > baseY){
+    buttonStatus[AXISLY] = map(currY, baseY, maxY, 127, 255);
+  } else if (currY < baseY){
+    buttonStatus[AXISLY] = map(currY, minY, baseY, 0, 127);
+  }
+    buttonStatus[AXISLY] *= -1;
   
   send_pad_state();
   delay(2);
