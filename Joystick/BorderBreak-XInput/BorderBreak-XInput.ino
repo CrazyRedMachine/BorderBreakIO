@@ -113,7 +113,10 @@ void loop() {
     ledState[1] = blueMode ? HIGH : LOW;
     ledState[2] = blueMode ? LOW : HIGH;
   }
-  
+
+  // Send neutral right stick
+    buttonStatus[AXISRX] = 127;
+    buttonStatus[AXISRY] = 127;  
   // Read analogs
   currX = analogRead(analogInPin);
   currY = analogRead(analogInPin2);
