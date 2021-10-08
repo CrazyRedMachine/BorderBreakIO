@@ -4,13 +4,16 @@
 #define BUTTON_COUNT 4
 #define LED_COUNT 3
 
+//use hotkey combinations (but3 + triggers give two extra buttons)
+bool g_hotkey_buttons = true;
+
 const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
 const int analogInPin2 = A1; // Analog output pin that the LED is attached to
 
 // Last state of the buttons
 byte ledPins[LED_COUNT] = {7,8,9};
 byte buttonPins[BUTTON_COUNT] = {2,3,4,5};
-byte buttonOrder[BUTTON_COUNT] = {BUTTONB,BUTTONA,BUTTONY,BUTTONX};
+byte buttonOrder[BUTTON_COUNT+2] = {BUTTONB,BUTTONA,BUTTONY,BUTTONX,BUTTONLT,BUTTONRT};
 
 int buttonState[BUTTON_COUNT] = {0,0,0,0};
 int lastButtonState[BUTTON_COUNT] = {0,0,0,0};
@@ -66,6 +69,50 @@ void loop() {
           buttonStatus[buttonOrder[i]] = buttonState[i];
     }
     
+  }
+
+  #define HOTKEY_SWITCH_COOLDOWN 20
+  static int hotkey_switch_cooldown = 0;
+  if (buttonState[0] && buttonState[1] && buttonState[2] && buttonState[3])
+  {
+    hotkey_switch_cooldown++;
+    if (hotkey_switch_cooldown == HOTKEY_SWITCH_COOLDOWN)
+    {
+      g_hotkey_buttons = !g_hotkey_buttons;
+      buttonStatus[buttonOrder[4]] = 0;
+      buttonStatus[buttonOrder[5]] = 0;
+    }
+  }
+  else
+  {
+    hotkey_switch_cooldown = 0;
+  }
+  
+  if (g_hotkey_buttons)
+  {
+    if (buttonState[2])
+   {
+      if (buttonState[0])
+      {
+        buttonStatus[buttonOrder[0]] = 0;
+        buttonStatus[buttonOrder[2]] = 0;
+        buttonStatus[buttonOrder[4]] = 1;  
+      }
+      else buttonStatus[buttonOrder[4]] = 0;
+
+      if (buttonState[1])
+      {
+        buttonStatus[buttonOrder[1]] = 0;
+        buttonStatus[buttonOrder[2]] = 0;
+        buttonStatus[buttonOrder[5]] = 1;  
+      }
+      else buttonStatus[buttonOrder[5]] = 0;
+    }
+    else
+    {
+      buttonStatus[buttonOrder[4]] = 0;
+      buttonStatus[buttonOrder[5]] = 0;
+    }
   }
 
   //update leds
@@ -155,4 +202,3 @@ void loop() {
   send_pad_state();
   delay(2);
 }
-
